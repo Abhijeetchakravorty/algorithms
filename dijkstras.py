@@ -1,84 +1,141 @@
-# Python program for Dijkstra's single 
-# source shortest path algorithm. The program is 
-# for adjacency matrix representation of the graph 
+class Graph:
+        def __init__(self):
+                self.vertices = {}
+        
+        def add_vertex(self, key):
+                """Add a vertex with the given key to the grap"""
+                vertex = Vertex(key)
+                self.vertices[key] = vertex
+        
+        def get_vertex(self, key):
+                """Return vertex object with the corresponding key"""
+                return self.vertices[key]
+        
+        def __contains__(self, key):
+                return key in self.vertices
+        
+        def add_edge(self, src_key, dest_key, weight=1):
+                """Add edge from src_key to dest_key with given weight"""
+                self.vertices[src_key].add_neighbour(self.vertices[dest_key], weight)
 
-# Library for INT_MAX 
-import sys 
+        def does_edge_exist(self, src_key, dest_key):
+                """Return True if there is an edge from src_key to dest_key."""
+                return self.vertices[src_key].does_it_point_to(self.vertices[dest_key])
+        
+        def __iter__(self):
+                return iter(self.vertices.values())
 
-class Graph(): 
+class Vertex:
+        def __init__(self, key):
+                self.key = key
+                self.points_to = {}
+        
+        def get_key(self):
+                """Return key corresponding to this vertex obejct"""
+                return self.key
+        
+        def add_neighbour(self, dest, weight):
+                """Make this vertex point to dest with given edge weight"""
+                self.points_to[dest] = weight
+        
+        def get_neighbours(self):
+                """Return all vertices pointed to by this vertex"""
+                return self.points_to.keys()
+        
+        def get_weight(self, dest):
+                """Get weight of edgeg from this vertex to dest."""
+                return self.points_to[dest]
+        
+        def does_it_point_to(self, dest):
+                """Return true if this vertex points to dest."""
+                return dest in self.points_to
 
-	def __init__(self, vertices): 
-		self.V = vertices 
-		self.graph = [[0 for column in range(vertices)] 
-					for row in range(vertices)] 
+def dijkstra(g, source):
+        """Return distance where distance[v] is mindistance from source to v.
 
-	def printSolution(self, dist): 
-		print ("Vertex tDistance from Source") 
-		for node in range(self.V): 
-			print (node, "t", dist[node]) 
+        This will return a dictionary distance
 
-	# A utility function to find the vertex with 
-	# minimum distance value, from the set of vertices 
-	# not yet included in shortest path tree 
-	def minDistance(self, dist, sptSet): 
+        g is a Graph object
 
-		# Initilaize minimum distance for next node 
-		min = sys.maxsize 
+        source is a Vertex object in g/
+        """
 
-		# Search not nearest vertex not in the 
-		# shortest path tree 
-		for v in range(self.V): 
-			if dist[v] < min and sptSet[v] == False: 
-				min = dist[v] 
-				min_index = v 
+        unvisited = set(g)
+        distance = dict.fromkeys(g, float('inf'))
+        distance[source] = 0
 
-		return min_index 
 
-	# Funtion that implements Dijkstra's single source 
-	# shortest path algorithm for a graph represented 
-	# using adjacency matrix representation 
-	def dijkstra(self, src): 
+        while unvisited != set():
+                #find vertex with minimum distance
+                closest = min(unvisited, key=lambda v:distance[v])
 
-		dist = [sys.maxsize] * self.V 
-		dist[src] = 0
-		sptSet = [False] * self.V 
+                #mark as visited
+                unvisited.remove(closest)
 
-		for cout in range(self.V): 
+                #udpate distances
+                for neighbour in closest.get_neighbours():
+                        if neighbour in unvisited:
+                                new_distance = distance[closest] + closest.get_weight(neighbour)
+                                if distance[neighbour] > new_distance:
+                                        distance[neighbour] = new_distance
 
-			# Pick the minimum distance vertex from 
-			# the set of vertices not yet processed. 
-			# u is always equal to src in first iteration 
-			u = self.minDistance(dist, sptSet) 
+        return distance
 
-			# Put the minimum distance vertex in the 
-			# shotest path tree 
-			sptSet[u] = True
+g = Graph()
+print("Undirected graph")
+print("Menu")
+print("Add vertex <key>")
+print("Add edge <src> <dest> <weight>")
+print("shortest <source vertex key>")
+print("display")
+print("quit")
 
-			# Update dist value of the adjacent vertices 
-			# of the picked vertex only if the current 
-			# distance is greater than new distance and 
-			# the vertex in not in the shotest path tree 
-			for v in range(self.V): 
-				if self.graph[u][v] > 0 and \ 
-					sptSet[v] == False and \ 
-					dist[v] > dist[u] + self.graph[u][v]: 
-					dist[v] = dist[u] + self.graph[u][v] 
+while True:
+        do = input("What would you like to do? ").split()
 
-		self.printSolution(dist) 
+        operation = do[0]
+        if operation == "add":
+                suboperation = do[1]
+                if suboperation == "vertex":
+                        key = int(do[2])
+                        if key not in g:
+                                g.add_vertex(key)
+                        else:
+                                print("Vertex already exists")
+                elif suboperation == "edge":
+                        src = int(do[2])
+                        dest = int(do[3])
+                        weight = int(do[4])
+                        if src not in g:
+                                print("Vertex {} does not exist".format(src))
+                        elif dest not in g:
+                                print('Vertex {} does not exist.'.format(dest))
+                        else:
+                                if not g.does_edge_exist(src, dest):
+                                        g.add_edge(src, dest, weight)
+                                        g.add_edge(dest, src, weight)
+                                else:
+                                        print("Edge already exists")
+        elif operation == "shortest":
+                key = int(do[1])
+                source = g.get_vertex(key)
+                distance = dijkstra(g, source)
+                print("Distances from {}: ".format(key))
+                for v in distance:
+                        print("Distance to {}: {}".format(v.get_key(), distance[v]))
+                print()
+        elif operation == "display":
+                print("Vertices: ", end=" ")
+                for v in g:
+                        print(v.get_key(), end=" ")
+                print()
 
-# Driver program 
-g = Graph(9) 
-g.graph = [[0, 4, 0, 0, 0, 0, 0, 8, 0], 
-		[4, 0, 8, 0, 0, 0, 0, 11, 0], 
-		[0, 8, 0, 7, 0, 4, 0, 0, 2], 
-		[0, 0, 7, 0, 9, 14, 0, 0, 0], 
-		[0, 0, 0, 9, 0, 10, 0, 0, 0], 
-		[0, 0, 4, 14, 10, 0, 2, 0, 0], 
-		[0, 0, 0, 0, 0, 2, 0, 1, 6], 
-		[8, 11, 0, 0, 0, 0, 1, 0, 7], 
-		[0, 0, 2, 0, 0, 0, 6, 7, 0] 
-		]; 
-
-g.dijkstra(0); 
-
-# This code is contributed by Divyanshu Mehta 
+                print("Edges: ")
+                for v in g:
+                        for dest in v.get_neighbours():
+                                w = v.get_wieght(dest)
+                                print("(src={}, dest={}, weight={}".format(v.get_key(), dest.get_key(), w))
+                
+                print()
+        elif operation == "quit":
+                break

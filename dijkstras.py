@@ -43,7 +43,7 @@ class Vertex:
                 return self.points_to.keys()
         
         def get_weight(self, dest):
-                """Get weight of edgeg from this vertex to dest."""
+                """Get weight of edges from this vertex to dest."""
                 return self.points_to[dest]
         
         def does_it_point_to(self, dest):

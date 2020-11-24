@@ -2,14 +2,12 @@ import sys
 class Graph:
         def __init__(self):
                 self.vertices = {}
-
         def add_vertex(self, key):
                 """Add a vertex with the given key"""
                 vertex = Vertex(key)
                 self.vertices[key] = vertex
-        
         def get_vertex(self, key):
-                """Return vertex object with the corresponding key"""
+                """Return vertex object with the correpoding key"""
                 return self.vertices[key]
         
         def __contains__(self, key):
@@ -21,7 +19,7 @@ class Graph:
                 self.vertices[src_key].add_neighbour(self.vertices[dest_key], weight)
         
         def does_edge_exists(self, src_key, dest_key):
-                """Return True if there is an edge from src_key to dest_key"""
+                """Return true if there is an edge from src_key to dest_key"""
                 return self.vertices[src_key].does_it_point_to(self.vertices[dest_key])
         
         def __iter__(self):
@@ -35,11 +33,9 @@ class Vertex:
         def get_key(self):
                 """Return key corresponding to this vertex object"""
                 return self.key
-        
         def add_neighbour(self, dest, weight):
-                """Make this vertex point to dest with given edggge weight"""
+                """Make this vertex point to dest with given edge weight"""
                 self.points_to[dest] = weight
-        
         def get_neighbours(self):
                 return self.points_to.keys()
         
@@ -54,11 +50,11 @@ class Vertex:
 def dijkstras(g, source):
         """Return distance where distance[b] is min distance from source to v
 
-        This will return a  dictionary distance
+        This will return a dicitionary distance
 
-        g is a Graph object
+        g is a graph object
 
-        source is a Vertex object in g/
+        source is a vertex object in g/
 
         """
 
@@ -77,31 +73,31 @@ def dijkstras(g, source):
                                         distance[neighbour] = new_distance
         return distance
 
-
 g = Graph()
 while True:
         print("Choose an option: ")
         print("1. Add vertex")
         print("2. Add edges")
         print("3. Shortest")
-        print("4. Display")
-        print("5. Press 5 or any other key to exit")
-        
+        print("4. display")
+        print("5. Press any other key to exit")
+
         option = int(input())
-        if (option == 1):
+
+        if (option==1):
                 key = int(input("Please provide vertex: "))
                 if key not in g:
                         g.add_vertex(key)
                 else:
                         print("Vertex already exists")
-        elif option == 2:
-                src = int(input("Please provide source: "))
+        elif option==2:
+                src = int(input("Please provide source vertex: "))
                 dest = int(input("Please provide destination: "))
-                weight = int(input("Please provide weight: "))
+                weight = int(input("Please provide a weight: "))
                 if src not in g:
-                        print("Vertex {} does not exist".format(src))
+                        print("Vertex {} does not exists".format(src))
                 elif dest not in g:
-                        print("Vertex {} does not exist".format(dest))
+                        print("Vertex {} does not exists".format(src))
                 else:
                         if not g.does_edge_exists(src, dest):
                                 g.add_edge(src, dest, weight)
@@ -112,22 +108,20 @@ while True:
                 key = int(input("Please provide starting vertex: "))
                 source = g.get_vertex(key)
                 distance = dijkstras(g, source)
-                print("Distance from {}:".format(key))
+                print("Distance from {}: ".format(key))
                 for v in distance:
                         print("Distance to {}: {}".format(v.get_key(), distance[v]))
                 print()
-        elif option==4:
+        elif option == 4:
                 print("Vertices: ", end=" ")
                 for v in g:
-                        print(v.get_key(), end=" ")
+                        print(v.get_ke(), end=" ")
                 print()
-
-                print("Edges: ")
                 for v in g:
                         for dest in v.get_neighbours():
                                 w = v.get_weight(dest)
                                 print("(src={}, dest={}, weight={}".format(v.get_key(), dest.get_key(), w))
-                print()
+                        print()
         else:
                 print("Quit")
                 sys.exit()

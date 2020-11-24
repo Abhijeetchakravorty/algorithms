@@ -125,7 +125,7 @@ while True:
                         print("Distance to {}: {}".format(v.get_key(), distance[v]))
                 print()
         elif operation == "display":
-                print("Vertices: ", end="")
+                print("Vertices: ", end=" ")
                 for v in g:
                         print(v.get_key(), end=" ")
                 print()

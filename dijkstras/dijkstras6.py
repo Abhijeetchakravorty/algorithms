@@ -4,63 +4,45 @@ class Vertex:
                 self.key = key
                 self.points_to = {}
         
-        def get_key(self):
-                """Return key corresponding to this vertex object"""
-                return self.key
-        
-        def add_neighbour(self, dest, weight):
-                """Make this vertex point to dest with given edggge weight"""
-                self.points_to[dest] = weight
-        
         def get_neighbours(self):
                 return self.points_to.keys()
-        
+                
+        def get_key(self):
+                return self.key
+
         def get_weight(self, dest):
-                """Get weight if this vertex points to dest"""
                 return self.points_to[dest]
         
-        def does_it_point_to(self, dest):
-                """Return true if this vertex points to dest"""
+        def does_point_to(self, dest):
                 return dest in self.points_to
+        
+        def set_neighbour(self, dest, weight):
+                self.points_to[dest] = weight
+
 class Graph:
         def __init__(self):
                 self.vertices = {}
-
-        def add_vertex(self, key):
-                """Add a vertex with the given key"""
-                vertex = Vertex(key)
-                self.vertices[key] = vertex
-        
-        def get_vertex(self, key):
-                """Return vertex object with the corresponding key"""
-                return self.vertices[key]
         
         def __contains__(self, key):
-                """Return vertex object with the corresponding key"""
                 return key in self.vertices
         
-        def add_edge(self, src_key, dest_key, weight=1):
-                """Add edge from src_key to dest_key with given weight"""
-                self.vertices[src_key].add_neighbour(self.vertices[dest_key], weight)
-        
-        def does_edge_exists(self, src_key, dest_key):
-                """Return True if there is an edge from src_key to dest_key"""
-                return self.vertices[src_key].does_it_point_to(self.vertices[dest_key])
-        
         def __iter__(self):
-                return iter(self.vertices.values())
+                return iter(self.vertice.values())
+        
+        def set_vertex(self, key):
+                vertex = Vertex(key)
+                self.vertices = vertex
+
+        def get_vertex(self, key):
+                return self.vertices[key]
+        
+        def set_edge(self, src_key, dest_key, weight=1):
+                self.vertices[src_key].set_neighbour(self.vertices[dest_key], weight)
+        
+        def has_edge(self, src_key, dest_key):
+                return self.vertices[src_key].does_point_to(self.vertices[dest_key])
 
 def dijkstras(g, source):
-        """Return distance where distance[b] is min distance from source to v
-
-        This will return a  dictionary distance
-
-        g is a Graph object
-
-        source is a Vertex object in g/
-
-        """
-
         unvisited = set(g)
         distance = dict.fromkeys(g, float('inf'))
         distance[source] = 0
@@ -76,7 +58,6 @@ def dijkstras(g, source):
                                         distance[neighbour] = new_distance
         return distance
 
-
 g = Graph()
 while True:
         print("Choose an option: ")
@@ -85,38 +66,40 @@ while True:
         print("3. Shortest")
         print("4. Display")
         print("5. Press 5 or any other key to exit")
-        
+
         option = int(input())
-        if (option == 1):
+        if option == 1:
                 key = int(input("Please provide vertex: "))
                 if key not in g:
-                        g.add_vertex(key)
+                        g.set_vertex(key)
                 else:
                         print("Vertex already exists")
-        elif option == 2:
+        elif option==2:
                 src = int(input("Please provide source: "))
-                dest = int(input("Please provide destination: "))
-                weight = int(input("Please provide weight: "))
+                dest = int(input("Please provide destination"))
+                weight = int(input("Please provide weight"))
+
                 if src not in g:
                         print("Vertex {} does not exist".format(src))
                 elif dest not in g:
-                        print("Vertex {} does not exist".format(dest))
+                        print("Vertex {} does not exists".format(dest))
                 else:
-                        if not g.does_edge_exists(src, dest):
-                                g.add_edge(src, dest, weight)
-                                g.add_edge(dest, src, weight)
+                        if not g.has_edge(src, dest):
+                                g.set_edge(src, dest, weight)
+                                g.set_edge(dest, src, weight)
                         else:
                                 print("Edge already exists")
-        elif option==3:
-                key = int(input("Please provide starting vertex: "))
+        elif option == 3:
+                key = int(input("PLease provide starting vertex: "))
                 source = g.get_vertex(key)
                 distance = dijkstras(g, source)
                 print("Distance from {}:".format(key))
                 for v in distance:
-                        print("Distance to {}: {}".format(v.get_key(), distance[v]))
+                        print("Distance to {}: {}".format(v.get_key()))
                 print()
         elif option==4:
                 print("Vertices: ", end=" ")
+
                 for v in g:
                         print(v.get_key(), end=" ")
                 print()
@@ -125,8 +108,11 @@ while True:
                 for v in g:
                         for dest in v.get_neighbours():
                                 w = v.get_weight(dest)
-                                print("(src={}, dest={}, weight={}".format(v.get_key(), dest.get_key(), w))
+                                print("(src={}, dest={}, weight={})".format(v.get_key(), dest.get_key(), w))
                 print()
         else:
                 print("Quit")
                 sys.exit()
+
+
+

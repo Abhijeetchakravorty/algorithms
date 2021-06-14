@@ -8,22 +8,20 @@ class Node {
 }
 
 var postorderTraversal = function(root) {
-        let list = [];
+        let result = [];
         let nodeStack = [];
-        let data = null;
-        nodeStack.push(root);
-        while(nodeStack.length > 0) {
-                data = nodeStack.pop();
-                list.unshift(data.val);
-                if (data.left !== null) {
-                        nodeStack.push(data.left);
-                }
-
-                if (data.right !== null) {
-                        nodeStack.push(data.right);
+        let p = root;
+        while(nodeStack.length > 0 || p !== null) {
+                if(p != null) {
+                        nodeStack.push(p);
+                        result.unshift(p.val);   // Reverse the process of preorder
+                        p = p.right;             // Reverse the process of preorder
+                } else {
+                        let node = nodeStack.pop();
+                        p = node.left;           // Reverse the process of preorder
                 }
         }
-        return list;
+        return result;
 }
 
 let root = new Node(1);

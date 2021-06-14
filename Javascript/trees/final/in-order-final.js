@@ -6,19 +6,19 @@ class Node {
                 this.right = (right === undefined ? null : right);
         }
 }
-
 var inorderTraversal = function(root) {
         let res = [];
         let nodeStack = [];
         let curr = root;
         while (curr != null || nodeStack.length > 0) {
-            while (curr != null) {
-                nodeStack.push(curr);
-                curr = curr.left;
-            }
-            curr = nodeStack.pop();
-            res.push(curr.val);
-            curr = curr.right;
+                while (curr != null) {
+                        console.log(curr.val);
+                        nodeStack.push(curr);
+                        curr = curr.left;
+                }
+                curr = nodeStack.pop();
+                res.push(curr.val);
+                curr = curr.right;
         }
         return res;
 }

@@ -7,20 +7,21 @@ class Node {
         }
 }
 var inorderTraversal = function(root) {
-        let res = [];
+        /// IN ORDER TRAVERSAL
+        // LEFT -----> ROOT ----> RIGHT
+        let result = [];
         let nodeStack = [];
         let curr = root;
-        while (curr != null || nodeStack.length > 0) {
-                while (curr != null) {
-                        console.log(curr.val);
+        while(curr !== null || nodeStack.length > 0) {
+                while(curr !== null) {
                         nodeStack.push(curr);
                         curr = curr.left;
                 }
-                curr = nodeStack.pop();
-                res.push(curr.val);
-                curr = curr.right;
+                let node = nodeStack.pop();
+                result.push(node.val);
+                curr = node.right;
         }
-        return res;
+        return result;
 }
 let root = new Node(1);
 root.left = new Node(5);

@@ -8,17 +8,19 @@ class Node {
 }
 
 var postorderTraversal = function(root) {
+        /// postorder traversal
+        /// LEFT ----> RIGHT ----> ROOT
         let result = [];
         let nodeStack = [];
-        let p = root;
-        while(nodeStack.length > 0 || p !== null) {
-                if(p != null) {
-                        nodeStack.push(p);
-                        result.unshift(p.val);   // Reverse the process of preorder
-                        p = p.right;             // Reverse the process of preorder
+        let data = root;
+        while(data !== null || nodeStack.length > 0){ 
+                if (data !== null) {
+                        nodeStack.push(data);
+                        result.unshift(data.val);
+                        data = data.right;
                 } else {
                         let node = nodeStack.pop();
-                        p = node.left;           // Reverse the process of preorder
+                        data = node.left;
                 }
         }
         return result;

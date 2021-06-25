@@ -8,6 +8,8 @@ class Node  {
 }
 
 var preorderTraversal = function(root) {
+        /// pre order traversal
+        /// ROOT -----> LEFT -----> RIGHT
         let nodeStack = [];
         let list = [];
         let data = null;

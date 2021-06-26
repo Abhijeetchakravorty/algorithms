@@ -8,28 +8,57 @@ class Node {
 }
 
 var levelOrderTraversal = function(root) {
-        let levels = [];
-        if (!root) {
-                return levels;
+        let queue = [];
+        let result = [];
+        let temp = [];
+        if(root != null) {
+            queue.push(root);
+            queue.push('X');
         }
-        const queue = [root];
-        while (queue.length) {
-                const queueLength = queue.length;
-                const level = [];
-                for (let i = 0; i < queueLength; i++) {
-                        const node = queue.shift();
-                        if (node.left) {
-                                queue.push(node.left);
+        while(queue.length != 0){
+                let head = queue.shift();
+                if(head == 'X'){
+                        result.push(temp);
+                        if(queue.length > 0){
+                                queue.push('X');
+                                temp =[];
                         }
-                        if (node.right) {
-                                queue.push(node.right);
-                        }
-                        level.push(node.val);
+                }else{
+                        temp.push(head.val);
+                        if(head.left != null) queue.push(head.left);
+                        if(head.right != null) queue.push(head.right);
                 }
-                levels.push(level);
         }
-        return levels;
+        return result; 
 }
+
+// var levelOrderTraversal2 = function(root) {
+//         if (root == null) {
+//                 return [];
+//         }
+//         let queue = [root]
+//         let result = [];
+//         let next = [];
+//         let subArray = [];
+//         while (queue.length) {
+//                 let current = queue.shift()
+//                 if (current.left) {
+//                         next.push(current.left);
+//                 }
+//                 if (current.right) {
+//                         next.push(current.right);
+//                 }
+//                 subArray.push(current.val);
+//                 if (queue.length == 0) {
+//                         result.push(subArray);
+//                         let data = next;
+//                         queue = data;
+//                         next = [];
+//                         subArray = []
+//                 }
+//         }
+//         return result;
+// }
 
 let root = new Node("F");
 root.left = new Node("B");
@@ -41,3 +70,4 @@ root.left.right = new Node("D");
 root.left.right.left = new Node("C");
 root.left.right.right = new Node("E");
 console.log(levelOrderTraversal(root));
+

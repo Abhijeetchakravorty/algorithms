@@ -12,6 +12,7 @@ function* enumerate(array) {
                 yield [i, array[i]];
         }
 }
+
 var buildTree = function(inorder, postorder) {
         let map_inorder = {}
         for (let x of enumerate(inorder)) {

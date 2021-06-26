@@ -8,8 +8,6 @@ class Node {
 }
 
 
-
-
 var hasPathSum = function(root, sum) {
     if(root == null) return false;
     

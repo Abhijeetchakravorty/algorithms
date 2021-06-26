@@ -23,6 +23,7 @@ var postorderTraversal = function(root) {
                         data = node.left;
                 }
         }
+        
         return result;
 }
 

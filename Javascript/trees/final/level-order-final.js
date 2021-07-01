@@ -12,18 +12,19 @@ var levelOrderTraversal = function(root) {
         let result = [];
         let temp = [];
         if(root != null) {
-            queue.push(root);
-            queue.push('X');
+                queue.push(root);
+                queue.push('X');
         }
+        
         while(queue.length != 0){
                 let head = queue.shift();
                 if(head == 'X'){
                         result.push(temp);
                         if(queue.length > 0){
                                 queue.push('X');
-                                temp =[];
+                                temp = [];
                         }
-                }else{
+                } else {
                         temp.push(head.val);
                         if(head.left != null) queue.push(head.left);
                         if(head.right != null) queue.push(head.right);
@@ -31,34 +32,6 @@ var levelOrderTraversal = function(root) {
         }
         return result; 
 }
-
-// var levelOrderTraversal2 = function(root) {
-//         if (root == null) {
-//                 return [];
-//         }
-//         let queue = [root]
-//         let result = [];
-//         let next = [];
-//         let subArray = [];
-//         while (queue.length) {
-//                 let current = queue.shift()
-//                 if (current.left) {
-//                         next.push(current.left);
-//                 }
-//                 if (current.right) {
-//                         next.push(current.right);
-//                 }
-//                 subArray.push(current.val);
-//                 if (queue.length == 0) {
-//                         result.push(subArray);
-//                         let data = next;
-//                         queue = data;
-//                         next = [];
-//                         subArray = []
-//                 }
-//         }
-//         return result;
-// }
 
 let root = new Node("F");
 root.left = new Node("B");

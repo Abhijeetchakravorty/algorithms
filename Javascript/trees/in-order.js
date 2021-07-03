@@ -8,19 +8,26 @@ class Node {
 }
 
 var inorderTraversal = function(root) {
-        let arr = [];
-        let nodeStack = [];
-        let curr = root;
-        while (curr !== null || nodeStack.length !== 0) {
-                while (curr !== null) {
-                        nodeStack.push(curr);
-                        curr = curr.left;
+        if (!root) {
+                return []
+            }
+            let current = root
+            const result = []
+            const stack = []
+        
+            while (current || stack.length) {
+                if (current) {
+                    stack.push(current)
+                    current = current.left
                 }
-                curr = nodeStack.pop();
-                arr.push(curr.val);
-                curr = curr.right;
-        }
-        return arr;
+                else {
+                    current = stack.pop()
+                    result.push(current.val)
+                    current = current.right
+                }
+            }
+        
+        return result
 }
 
 let root = new Node(1);

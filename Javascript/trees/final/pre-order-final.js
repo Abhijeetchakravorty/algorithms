@@ -8,24 +8,25 @@ class Node  {
 }
 
 var preorderTraversal = function(root) {
-        /// pre order traversal
-        /// ROOT -----> LEFT -----> RIGHT
-        let nodeStack = [];
-        let list = [];
-        let data = null;
-        nodeStack.push(root);
-        while(nodeStack.length > 0) {
-                data = nodeStack.pop();
-                list.push(data.val);
-                if (data.right !== null) {
-                        nodeStack.push(data.right);
-                }
-
-                if (data.left !== null) {
-                        nodeStack.push(data.left);
-                }
+        let stack=[];
+    let res=[];
+    
+    if(root == null){
+        return [];
+    }
+    
+    stack.push(root);
+    while(stack.length !== 0){
+        let node = stack.pop();
+        res.push(node.val);
+        if(node.right !== null){
+            stack.push(node.right);
         }
-        return list;
+        if(node.left !== null){
+            stack.push(node.left);
+        }
+    }
+    return res;
 }
 
 let root = new Node(1);

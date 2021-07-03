@@ -8,11 +8,14 @@ class Node {
 }
 
 var maxDepth = function(root) {
-    let levels = [];
     if (!root) {
-            return levels;
-    }
-    return 1+Math.max(maxDepth(root.left), maxDepth(root.right));
+        return 0; 
+     }
+     
+     const left = maxDepth(root?.left) + 1;
+     const right = maxDepth(root?.right) + 1;
+     
+     return Math.max(left, right);
 }
 
 let root = new Node("F");

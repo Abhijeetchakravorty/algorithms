@@ -10,14 +10,15 @@ class Node {
 
 
 var isSymmetric = function(root) {
-    return isMirror(root, root);
+    return traverse(root, root);
+    function traverse(nodeA, nodeB) {
+        if (nodeA === null && nodeB === null) return true;
+        if (nodeA === null || nodeB === null) return false;
+        
+        return (nodeA.val === nodeB.val && traverse(nodeA.left, nodeB.right) && traverse(nodeA.right, nodeB.left))
+    }
 }
 
-var isMirror = function(t1, t2) {
-    if (t1 == null && t2 == null) return true;
-    if (t1 == null || t2 == null) return false;
-    return ((t1.val == t2.val) && isMirror(t1.right, t2.left) && isMirror(t1.left, t2.right));
-}
 
 let root = new Node("F");
 root.left = new Node("B");
